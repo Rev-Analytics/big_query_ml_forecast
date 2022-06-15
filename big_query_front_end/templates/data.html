@@ -1,0 +1,18 @@
+ <html>
+ <head>
+ <title>Fields</title>
+    </head>
+    <body>
+        <h1>Enter required parameters</h1>
+        <form method="POST" action="{{url_for('data')}}"><br>
+            {{form.csrf_token}}<br>
+            {{ form.date.label }} {{ form.date() }}<br>
+            {{ form.target.label }} {{ form.target()}}<br>
+            {{ form.dimensions.label }} {{ form.dimensions()}}<br>
+            {{ form.horizon.label }}{{ form.horizon() }}<br>
+            {{ form.stop_date.label }}{{ form.stop_date() }}<br>
+            {{ form.training_stop.label }} {{ form.training_stop() }}<br>
+            <input type = "submit" value ="Submit">
+        </form>
+    </body>
+    </html>

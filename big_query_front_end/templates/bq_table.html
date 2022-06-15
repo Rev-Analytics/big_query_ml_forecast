@@ -1,0 +1,241 @@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js" integrity="sha512-kdpGWY5wS6yTcqKxo6c14+4nk99hWFTwQ5XtSyELJxVwpWH23MN80iTVzkMg1jv3FZbdKPbFWLr98AA03/zPuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+<script src="https://npmcdn.com/Chart.Zoom.js@0.3.0/Chart.Zoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js" integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment-with-locales.min.js" integrity="sha512-vFABRuf5oGUaztndx4KoAEUVQnOvAIFs59y4tO0DILGWhQiFnFHiR+ZJfxLDyJlXgeut9Z07Svuvm+1Jv89w5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+<script>
+     
+    $(document).ready(function(){
+        var data = JSON.parse('{{ bq_row_data | tojson | safe}}');
+        console.log(data);
+        var fr_len = "{{bq_forecast_length}}";
+        console.log(fr_len)
+        var date = [];
+        var target = [];
+        for (let key in data.date) {   
+          var ts = data.date[key];
+          date.push(moment(ts).format('MMM Do YY'));
+        }
+        for (let key in data.sales) {      
+            target.push(data.sales[key]);
+        }
+        console.log(date);
+        console.log(target);
+        target = target.map(a => a.toFixed(2));
+        var options = {
+          series: [{
+            name: "Desktops",
+            data: target
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: true
+          },
+                    toolbar: {
+                        show: true,
+                        offsetX: 0,
+                        offsetY: 0,
+                        tools: {
+                          download: false,
+                          selection: false,
+                          zoom: true,
+                          zoomin: true,
+                          zoomout: true,
+                          pan: false,
+                          reset: true | '<img src="/static/icons/reset.png" width="20">',
+                          customIcons: []
+                        },
+                        export: {
+                          csv: {
+                            filename: undefined,
+                            columnDelimiter: ',',
+                            headerCategory: 'category',
+                            headerValue: 'value',
+                            dateFormatter(timestamp) {
+                              return new Date(timestamp).toDateString()
+                            }
+                          },
+                          svg: {
+                            filename: undefined,
+                          },
+                          png: {
+                            filename: undefined,
+                          }
+                        },
+                        autoSelected: 'zoom' 
+                      },
+        },
+        forecastDataPoints: {
+          count: fr_len
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 3,
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: date,
+          
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+        
+        // var options = {
+        //   series: [{
+        //   name: 'Sales',
+        //   data: target
+        // }],
+        //   chart: {
+        //   height: 350,
+        //   type: 'line',
+        // },
+        // forecastDataPoints: {
+        //   count: fr_len
+        // },
+        // stroke: {
+        //   width: 5,
+        //   curve: 'smooth'
+        // },
+        // xaxis: {
+        //   type: 'datetime',
+        //   categories: date,
+        //   tickAmount: 10,
+        //   labels: {
+        //     formatter: function(value, timestamp, opts) {
+        //       return opts.dateFormatter(new Date(timestamp), 'dd MMM')
+        //     }
+        //   }
+        // },
+        // title: {
+        //   text: 'Forecast',
+        //   align: 'left',
+        //   style: {
+        //     fontSize: "16px",
+        //     color: '#666'
+        //   }
+        // },
+        // // fill: {
+        // //   type: 'gradient',
+        // //   gradient: {
+        // //     shade: 'dark',
+        // //     gradientToColors: [ '#FDD835'],
+        // //     shadeIntensity: 1,
+        // //     type: 'horizontal',
+        // //     opacityFrom: 1,
+        // //     opacityTo: 1,
+        // //     stops: [0, 100, 100, 100]
+        // //   },
+        // // },
+        // // yaxis: {
+        // //   min: -10,
+        // //   max: 40
+        // // }
+        // };
+
+        // var chart = new ApexCharts(document.querySelector("#chart"), options);
+        // chart.render();
+    });
+</script>
+<!-- <div class="row">
+    <div class="col-lg-6">
+        <h2>Historical data</h2>
+<table>
+    <tr>
+        {% for col in column_names %}
+        <th>{{col}}</th>
+        {% endfor %}
+    </tr>
+    {% for row in row_data %}
+    <tr>
+        {% for col, row_ in zip(column_names, row) %}
+      {% if col == link_column %}
+        <td>
+            <button type="submit" value={{ row_ }} name="person_id" form="patient_form" class="patient_button">
+                {{ row_ }}
+            </button>
+        </td>
+        {% else %} 
+        <td>{{row_}}</td>
+       {% endif %} 
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+</table>
+</div> -->
+
+<div class="col-lg-12">
+    <h2>Forecast data</h2>
+    <!-- <div>
+        {% for col in bq_row_data %}
+        <div>{{col}}</div>
+        {% endfor %}
+    </div> -->
+    <!-- <table>
+        <tr>
+            {% for col in bq_row_data %}
+            <th>{{col}}</th>
+            {% endfor %}
+        </tr>
+        {% for col in bq_row_data %}
+        {% for val in bq_row_data[col]%}
+        <tr>
+           
+            <td>{{bq_row_data[col][val]}}</td>
+            
+        </tr> 
+        {% endfor %}
+        {% endfor %}
+    </table> -->
+    <div class="row">
+        <div class="col-lg-12" id="chart"></div>
+    </div>
+</div>
+</div>
+    <div class = "container">
+>    <a href="/">Go Back</a>
+    </div>

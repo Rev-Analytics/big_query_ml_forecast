@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Flask Tutorial</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<script>
+// 	$(document).ready(function() {
+//     $("#btnSubmit").click(function(){
+// 		var selectedDimention = $("#select").val();
+// 		alert(selectedDimention);
+//     }); 
+// });
+</script>
+<body>
+    <form action="{{ url_for('test') }}" method="POST">    
+ 	<div class="row">
+		<div class="col-lg-4">
+			<select class="test form-control" id="select" name="select">
+				{% for store in stores %}
+				<option value='{{store[0]}}'>{{store[1]}}</option>
+				{% endfor %}
+			</select><br>
+			<input id = "btnSubmit" class="form-control btn-primary" type="submit" value="Submit"/>
+		</div>
+	</div>
+</form>
+</body>
+</html> 

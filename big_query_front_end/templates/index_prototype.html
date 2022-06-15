@@ -1,0 +1,115 @@
+
+{% extends 'base.html' %}
+
+{% block content%} 
+   <h1>U4cast</h1>-->
+
+<!-- <form class="" action="data" enctype="multipart/form-data" method="POST">
+    <input type="file" name="csvfile" value=""><br>
+    <input type="submit" name="" value="Submit"> 
+</form> -->
+
+
+
+
+<form method='POST' action= ' {{url_for('index")  }} ' enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Default file input example</label>
+            <input class="form-control" type="file" id="formFile" name ='input_file'>
+        </div>
+    </form>
+
+<!-- 
+
+   <form>
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Value Variable</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            Name of the field you wish to forecast
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Date Variable</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            Which column represents date field?
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Date Variable</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            Which column represents date field?
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Forecast Horizon</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            Enter number of periods to forecast for
+          </span>
+        </div>
+      </div>
+
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Stop Date (anomoly detect)</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            If applying anomoly removal, enter stop date
+          </span>
+        </div>
+      </div>
+
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="inputPassword6" class="col-form-label">Train Date</label>
+        </div>
+        <div class="col-auto">
+          <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        </div>
+        <div class="col-auto">
+          <span id="passwordHelpInline" class="form-text">
+            Specify train end date: last date used for training data
+          </span>
+        </div>
+      </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form> 
+
+   {% endblock%}
